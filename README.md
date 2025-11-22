@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 # Shop API Project
 
 A full-stack e-commerce application with Django REST Framework backend and React frontend.
@@ -83,66 +82,16 @@ source venv/bin/activate
 ```
 
 3. Install dependencies:
-=======
-# Django Shop API
-
-A modern Django REST API project for managing products with a beautiful web interface.
-
-## Features
-
-- 🛍️ Product management API
-- 🎨 Modern, responsive web interface
-- 📱 Mobile-friendly design
-- 🔄 RESTful API endpoints
-- 💾 SQLite database (easy setup)
-
-## Tech Stack
-
-- **Backend**: Django 5.2.8
-- **API**: Django REST Framework
-- **Database**: SQLite
-- **Frontend**: HTML, CSS, JavaScript
-
-## Installation
-
-1. Clone the repository:
-```bash
-git clone https://github.com/roaa-kittaneh/django-shop-api.git
-cd django-shop-api
-```
-
-2. Create a virtual environment:
-```bash
-python -m venv venv
-```
-
-3. Activate the virtual environment:
-- Windows:
-```bash
-venv\Scripts\activate
-```
-- Linux/Mac:
-```bash
-source venv/bin/activate
-```
-
-4. Install dependencies:
->>>>>>> 75febc4242b1c448cd8a7f7f4ac0da1fa0c29258
 ```bash
 pip install -r requirements.txt
 ```
 
-<<<<<<< HEAD
 4. Run migrations:
-=======
-5. Run migrations:
->>>>>>> 75febc4242b1c448cd8a7f7f4ac0da1fa0c29258
 ```bash
 cd shopapi
 python manage.py migrate
 ```
 
-<<<<<<< HEAD
 5. Start backend server:
 ```bash
 python manage.py runserver 8000
@@ -172,27 +121,6 @@ npm run dev
 - **Django Admin**: http://localhost:8000/admin/
 
 ## 📡 API Endpoints
-=======
-6. Create a superuser (optional):
-```bash
-python manage.py createsuperuser
-```
-
-7. Run the development server:
-```bash
-python manage.py runserver
-```
-
-## Usage
-
-- **Web Interface**: Visit `http://127.0.0.1:8000/` to see the product catalog
-- **API Endpoints**: 
-  - List/Create products: `http://127.0.0.1:8000/api/products/`
-  - Product detail: `http://127.0.0.1:8000/api/products/{id}/`
-- **Admin Panel**: Visit `http://127.0.0.1:8000/admin/` to manage products
-
-## API Endpoints
->>>>>>> 75febc4242b1c448cd8a7f7f4ac0da1fa0c29258
 
 - `GET /api/products/` - List all products
 - `POST /api/products/` - Create a new product
@@ -200,7 +128,6 @@ python manage.py runserver
 - `PUT /api/products/{id}/` - Update a product
 - `DELETE /api/products/{id}/` - Delete a product
 
-<<<<<<< HEAD
 ## 🔧 Configuration
 
 ### Environment Variables
@@ -255,6 +182,9 @@ backend/shopapi/db.sqlite3
 
 - [Backend README](backend/README.md) - Detailed backend setup and API documentation
 - [Frontend README](frontend/README.md) - Frontend development guide
+- [Quick Start Guide](QUICK_START.md) - Step-by-step instructions to run the project
+- [Setup Instructions](SETUP.md) - Detailed setup guide
+- [Troubleshooting](TROUBLESHOOTING.md) - Common issues and solutions
 
 ## 🐛 Troubleshooting
 
@@ -276,23 +206,5 @@ backend/shopapi/db.sqlite3
    - Check `frontend/.env` has correct `VITE_API_URL`
 
 ## 📄 License
-=======
-## Project Structure
-
-```
-shopapi/
-├── products/          # Products app
-│   ├── models.py      # Product model
-│   ├── views.py       # API views and web views
-│   ├── serializers.py # API serializers
-│   └── templates/     # HTML templates
-├── shopapi/           # Project settings
-│   ├── settings.py    # Django settings
-│   └── urls.py        # URL configuration
-└── manage.py          # Django management script
-```
-
-## License
->>>>>>> 75febc4242b1c448cd8a7f7f4ac0da1fa0c29258
 
 This project is open source and available under the MIT License.
