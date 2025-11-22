@@ -1,0 +1,283 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Product Catalog</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .header {
+            text-align: center;
+            color: white;
+            margin-bottom: 40px;
+            padding: 30px 0;
+        }
+
+        .header h1 {
+            font-size: 3rem;
+            margin-bottom: 10px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.2);
+        }
+
+        .header p {
+            font-size: 1.2rem;
+            opacity: 0.9;
+        }
+
+        .products-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 25px;
+            margin-bottom: 40px;
+        }
+
+        .product-card {
+            background: white;
+            border-radius: 15px;
+            padding: 25px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .product-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: linear-gradient(90deg, #667eea, #764ba2);
+        }
+
+        .product-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 40px rgba(0,0,0,0.3);
+        }
+
+        .product-id {
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+            padding: 5px 12px;
+            border-radius: 20px;
+            font-size: 0.85rem;
+            font-weight: bold;
+        }
+
+        .product-name {
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: #333;
+            margin-bottom: 10px;
+            margin-top: 10px;
+        }
+
+        .product-description {
+            color: #666;
+            margin-bottom: 20px;
+            line-height: 1.6;
+            min-height: 50px;
+        }
+
+        .product-price {
+            font-size: 2rem;
+            font-weight: bold;
+            color: #667eea;
+            margin-bottom: 10px;
+        }
+
+        .product-price::before {
+            content: '$';
+            font-size: 1.2rem;
+        }
+
+        .product-quantity {
+            display: inline-block;
+            padding: 8px 15px;
+            background: #f0f0f0;
+            border-radius: 20px;
+            font-size: 0.9rem;
+            color: #555;
+            margin-bottom: 15px;
+        }
+
+        .product-quantity.in-stock {
+            background: #d4edda;
+            color: #155724;
+        }
+
+        .product-quantity.low-stock {
+            background: #fff3cd;
+            color: #856404;
+        }
+
+        .product-quantity.out-of-stock {
+            background: #f8d7da;
+            color: #721c24;
+        }
+
+        .product-date {
+            font-size: 0.85rem;
+            color: #999;
+            margin-top: 15px;
+            padding-top: 15px;
+            border-top: 1px solid #eee;
+        }
+
+        .empty-state {
+            text-align: center;
+            color: white;
+            padding: 60px 20px;
+            background: rgba(255,255,255,0.1);
+            border-radius: 15px;
+            backdrop-filter: blur(10px);
+        }
+
+        .empty-state h2 {
+            font-size: 2rem;
+            margin-bottom: 10px;
+        }
+
+        .refresh-btn {
+            display: block;
+            margin: 30px auto;
+            padding: 15px 40px;
+            background: white;
+            color: #667eea;
+            border: none;
+            border-radius: 30px;
+            font-size: 1.1rem;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+        }
+
+        .refresh-btn:hover {
+            transform: scale(1.05);
+            box-shadow: 0 8px 20px rgba(0,0,0,0.3);
+        }
+
+        .loading {
+            text-align: center;
+            color: white;
+            font-size: 1.5rem;
+            padding: 40px;
+        }
+
+        @media (max-width: 768px) {
+            .header h1 {
+                font-size: 2rem;
+            }
+            
+            .products-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>🛍️ Product Catalog</h1>
+            <p>Browse our amazing collection of products</p>
+        </div>
+
+        <div id="products-container">
+            <div class="loading">Loading products...</div>
+        </div>
+    </div>
+
+    <script>
+        async function loadProducts() {
+            const container = document.getElementById('products-container');
+            
+            try {
+                const response = await fetch('/api/products/');
+                const products = await response.json();
+                
+                if (products.length === 0) {
+                    container.innerHTML = `
+                        <div class="empty-state">
+                            <h2>No Products Available</h2>
+                            <p>Check back later for new products!</p>
+                        </div>
+                    `;
+                    return;
+                }
+
+                container.innerHTML = '<div class="products-grid"></div>';
+                const grid = container.querySelector('.products-grid');
+
+                products.forEach(product => {
+                    const quantityClass = product.quantity === 0 ? 'out-of-stock' : 
+                                         product.quantity < 5 ? 'low-stock' : 'in-stock';
+                    const quantityText = product.quantity === 0 ? 'Out of Stock' : 
+                                        product.quantity < 5 ? `Low Stock (${product.quantity})` : 
+                                        `In Stock (${product.quantity})`;
+                    
+                    const date = new Date(product.created_at);
+                    const formattedDate = date.toLocaleDateString('en-US', { 
+                        year: 'numeric', 
+                        month: 'long', 
+                        day: 'numeric',
+                        hour: '2-digit',
+                        minute: '2-digit'
+                    });
+
+                    const card = document.createElement('div');
+                    card.className = 'product-card';
+                    card.innerHTML = `
+                        <span class="product-id">#${product.id}</span>
+                        <h2 class="product-name">${escapeHtml(product.name)}</h2>
+                        <p class="product-description">${escapeHtml(product.description || 'No description available')}</p>
+                        <div class="product-price">${parseFloat(product.price).toFixed(2)}</div>
+                        <span class="product-quantity ${quantityClass}">${quantityText}</span>
+                        <div class="product-date">Added: ${formattedDate}</div>
+                    `;
+                    grid.appendChild(card);
+                });
+            } catch (error) {
+                container.innerHTML = `
+                    <div class="empty-state">
+                        <h2>Error Loading Products</h2>
+                        <p>${error.message}</p>
+                        <button class="refresh-btn" onclick="loadProducts()">Retry</button>
+                    </div>
+                `;
+            }
+        }
+
+        function escapeHtml(text) {
+            const div = document.createElement('div');
+            div.textContent = text;
+            return div.innerHTML;
+        }
+
+        // Load products on page load
+        loadProducts();
+    </script>
+</body>
+</html>
+
