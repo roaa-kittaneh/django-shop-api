@@ -47,8 +47,9 @@ start "React Frontend" cmd /k "npm run dev"
 cd ..
 
 echo.
-echo Backend running on http://localhost:8000
-echo Frontend running on http://localhost:5173
+echo Django Admin (Add Products): http://localhost:8000/admin
+echo API Root: http://localhost:8000/api/
+echo Frontend Shop: http://localhost:5173
 echo.
 echo Both servers are running in separate windows.
 echo Close the windows to stop the servers.
